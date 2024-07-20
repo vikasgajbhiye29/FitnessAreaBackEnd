@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fitnessarea.entity.User;
+import com.fitnessarea.exception.ResourceNotFoundException;
 import com.fitnessarea.repository.UserRepository;
 import com.fitnessarea.service.UserService;
 @Service
@@ -31,7 +32,7 @@ public class UserServiceImpl implements UserService {
 	//	Update User By UserID
 	@Override
 	public User updateUserById(User user, int uid) {
-		User newuser = this.userRepository.findById(uid).orElseThrow();
+		User newuser = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Available For Update"));
 		newuser.setFname(user.getFname());
 		newuser.setLname(user.getLname());
 		newuser.setEmail(user.getEmail());
@@ -45,14 +46,14 @@ public class UserServiceImpl implements UserService {
 	//	Delete user By UserID
 	@Override
 	public void deleteUserById(int uid) {
-		User finduser = this.userRepository.findById(uid).orElseThrow();
+		User finduser = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Present For Deletion"));
 		this.userRepository.delete(finduser);
 	}
 
 	//	Getting User By UserID
 	@Override
 	public User getUserById(int uid) {
-		User userByID = this.userRepository.findById(uid).orElseThrow();
+		User userByID = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Available"));
 		return userByID;
 	}
 
