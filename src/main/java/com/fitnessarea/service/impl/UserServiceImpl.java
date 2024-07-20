@@ -13,7 +13,22 @@ import com.fitnessarea.service.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
-//	Update User By UserID
+
+	// Create User	
+	@Override
+	public User createUser(User request) {
+		User user = new User();
+		user.setFname(request.getFname());
+		user.setLname(request.getLname());
+		user.setEmail(request.getEmail());
+		user.setUsername(request.getUsername());
+		user.setPassword(request.getPassword());
+		user.setRole(request.getRole().USER);
+		user = this.userRepository.save(user);
+		return user;
+	}
+	
+	//	Update User By UserID
 	@Override
 	public User updateUserById(User user, int uid) {
 		User newuser = this.userRepository.findById(uid).orElseThrow();
@@ -26,25 +41,29 @@ public class UserServiceImpl implements UserService {
 		return this.userRepository.save(newuser);
 		
 	}
-//	Delete user By UserID
+
+	//	Delete user By UserID
 	@Override
 	public void deleteUserById(int uid) {
 		User finduser = this.userRepository.findById(uid).orElseThrow();
 		this.userRepository.delete(finduser);
 	}
-//	Getting User By UserID
+
+	//	Getting User By UserID
 	@Override
 	public User getUserById(int uid) {
 		User userByID = this.userRepository.findById(uid).orElseThrow();
 		return userByID;
 	}
-//	List Of User
+
+	//	List Of User
 	@Override
 	public List<User> listOfUser() {
 		List<User> userList = this.userRepository.findAll();
 		List<User> list = userList.stream().map(user -> user).collect(Collectors.toList());
 		return list;
 	}
+	
 
 
 
