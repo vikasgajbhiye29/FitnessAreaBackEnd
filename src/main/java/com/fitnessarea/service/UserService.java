@@ -5,6 +5,8 @@ import com.fitnessarea.entity.User;
 
 public interface UserService {
 	
+	User createUser(User user);
+	
 	User updateUserById(User user, int uid);
 
 	void deleteUserById(int uid);
