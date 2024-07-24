@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class User {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int uid;
 	private String fname;
 	private String lname;
