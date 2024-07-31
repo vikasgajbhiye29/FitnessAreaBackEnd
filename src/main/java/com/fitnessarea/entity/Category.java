@@ -1,41 +1,78 @@
 package com.fitnessarea.entity;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Category {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int cid;
-	private String cname;
-	private String cproduct;
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int categoryID;
+	private String categoryName;
 	
-	public int getCid() {
-		return cid;
+//	Product Mapping
+	@JsonIgnore
+	@OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY )
+	private List<Product> categoryProduct = new ArrayList<>();
+	
+	
+	
+//	Setter And Getter
+	public int getCategoryID() {
+		return categoryID;
 	}
-	public void setCid(int cid) {
-		this.cid = cid;
+	public void setCategoryID(int categoryID) {
+		this.categoryID = categoryID;
 	}
-	public String getCname() {
-		return cname;
+	public String getCategoryName() {
+		return categoryName;
 	}
-	public void setCname(String cname) {
-		this.cname = cname;
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
 	}
-	public String getCproduct() {
-		return cproduct;
+	public List<Product> getCproduct() {
+		return categoryProduct;
 	}
-	public void setCproduct(String cproduct) {
-		this.cproduct = cproduct;
+	public void setCproduct(List<Product> categoryProduct) {
+		this.categoryProduct = categoryProduct;
 	}
+
+//	ToString Method
 	@Override
 	public String toString() {
-		return "Category [cid=" + cid + ", cname=" + cname + ", cproduct=" + cproduct + "]";
+		return "Category [categoryID=" + categoryID + ", categoryName=" + categoryName + ", categoryProduct=" + categoryProduct + "]";
 	}
+	
+//	Constructors
+	public Category() {
+		super();
+	}
+	public Category(int categoryID, String categoryName, List<Product> categoryProduct) {
+		super();
+		this.categoryID = categoryID;
+		this.categoryName = categoryName;
+		this.categoryProduct = categoryProduct;
+	}
+	
+
+	
+	
+	
+	
+	
+	 
+	
 	
 	
 	
