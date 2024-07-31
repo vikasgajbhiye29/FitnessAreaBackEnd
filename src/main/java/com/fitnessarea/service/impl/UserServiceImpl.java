@@ -10,12 +10,13 @@ import com.fitnessarea.entity.User;
 import com.fitnessarea.exception.ResourceNotFoundException;
 import com.fitnessarea.repository.UserRepository;
 import com.fitnessarea.service.UserService;
+
 @Service
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
-	// Create User	
+// Create User	
 	@Override
 	public User createUser(User request) {
 		User user = new User();
@@ -28,11 +29,12 @@ public class UserServiceImpl implements UserService {
 		user = this.userRepository.save(user);
 		return user;
 	}
-	
-	//	Update User By UserID
+
+//	Update User By Its ID
 	@Override
 	public User updateUserById(User user, int uid) {
-		User newuser = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Available For Update"));
+		User newuser = this.userRepository.findById(uid)
+				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Available For Update"));
 		newuser.setFname(user.getFname());
 		newuser.setLname(user.getLname());
 		newuser.setEmail(user.getEmail());
@@ -40,32 +42,31 @@ public class UserServiceImpl implements UserService {
 		newuser.setPassword(user.getPassword());
 		newuser.setRole(user.getRole().USER);
 		return this.userRepository.save(newuser);
-		
+
 	}
 
-	//	Delete user By UserID
+// Delete user By Its ID
 	@Override
 	public void deleteUserById(int uid) {
-		User finduser = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Present For Deletion"));
+		User finduser = this.userRepository.findById(uid)
+				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Present For Deletion"));
 		this.userRepository.delete(finduser);
 	}
 
-	//	Getting User By UserID
+// Getting User Details By Its ID
 	@Override
 	public User getUserById(int uid) {
-		User userByID = this.userRepository.findById(uid).orElseThrow(() -> new ResourceNotFoundException("UserId : "+ uid +" is Not Available"));
+		User userByID = this.userRepository.findById(uid)
+				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Available"));
 		return userByID;
 	}
 
-	//	List Of User
+// List Of All User
 	@Override
 	public List<User> listOfUser() {
 		List<User> userList = this.userRepository.findAll();
 		List<User> list = userList.stream().map(user -> user).collect(Collectors.toList());
 		return list;
 	}
-	
-
-
 
 }

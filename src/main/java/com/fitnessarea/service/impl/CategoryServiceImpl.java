@@ -14,37 +14,36 @@ import com.fitnessarea.service.CategoryService;
 public class CategoryServiceImpl implements CategoryService {
 	@Autowired
 	private CategoryRepository catRepository;
+//	Create Category
 	@Override
 	public Category createCategory(Category category) {
 		Category createCategory = new Category();
-		createCategory.setCname(category.getCname());
-		createCategory.setCproduct(category.getCproduct());
+		createCategory.setCategoryName(category.getCategoryName());
 		Category saveCategory = this.catRepository.save(createCategory);
 		return saveCategory;
 	}
-
+//	Update Category By Its ID
 	@Override
 	public Category updateCategory(Category category, int cid) {
 		Category newupdate = this.catRepository.findById(cid).orElseThrow(() -> new ResourceNotFoundException("Category ID : " + cid + "Invalid Category ID For Updation"));
-		newupdate.setCname(category.getCname());
-		newupdate.setCproduct(category.getCproduct());
+		newupdate.setCategoryName(category.getCategoryName());
 		Category update = this.catRepository.save(newupdate);
 		return update;
 	}
-
+//	Delete Category By Its ID
 	@Override
 	public void deleteCategory(int cid) {
 		Category find = this.catRepository.findById(cid).orElseThrow(() -> new ResourceNotFoundException("Category ID : " + cid + "Invalid Category ID For Deletion"));
 		this.catRepository.delete(find);
 		
 	}
-
+//	Getting Details Of Category By Its ID
 	@Override
 	public Category getCategoryById(int cid) {
 		Category find = this.catRepository.findById(cid).orElseThrow(() -> new ResourceNotFoundException("Category ID : " + cid + "Invalid Category ID"));
 		return find;
 	}
-
+//	List Of All Category
 	@Override
 	public List<Category> listOfCategory() {
 		List<Category> list = this.catRepository.findAll();

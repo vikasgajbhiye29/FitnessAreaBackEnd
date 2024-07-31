@@ -1,16 +1,24 @@
 package com.fitnessarea.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 @Entity
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int uid;
+	private int userID;
 	private String fname;
 	private String lname;
 	private String username;
@@ -18,11 +26,17 @@ public class User {
 	private String password;
 	@Enumerated( value = EnumType.STRING)
 	private Role role;
-	public int getUid() {
-		return uid;
+//	Product Mapping
+	@JsonIgnore
+	@OneToMany(mappedBy = "productUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<Product> userProduct = new ArrayList<>();
+	
+//	Setter And Getter
+	public int getUserID() {
+		return userID;
 	}
-	public void setUid(int uid) {
-		this.uid = uid;
+	public void setUserID(int userID) {
+		this.userID = userID;
 	}
 	public String getFname() {
 		return fname;
@@ -60,11 +74,25 @@ public class User {
 	public void setRole(Role role) {
 		this.role = role;
 	}
+
+	public List<Product> getUserProduct() {
+		return userProduct;
+	}
+	public void setUserProduct(List<Product> userProduct) {
+		this.userProduct = userProduct;
+	}
+	
+//	ToString
 	@Override
 	public String toString() {
-		return "User [uid=" + uid + ", fname=" + fname + ", lname=" + lname + ", username=" + username + ", email="
-				+ email + ", password=" + password + ", role=" + role + "]";
+		return "User [userID=" + userID + ", fname=" + fname + ", lname=" + lname + ", username=" + username
+				+ ", email=" + email + ", password=" + password + ", role=" + role + ", userProduct=" + userProduct
+				+ "]";
 	}
+	
+//	Constructors
+	
+	
 
 	
 }
