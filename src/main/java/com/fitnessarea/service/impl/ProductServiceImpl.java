@@ -1,18 +1,28 @@
 package com.fitnessarea.service.impl;
- 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.fitnessarea.entity.Category;
 import com.fitnessarea.entity.Product;
+import com.fitnessarea.entity.User;
 import com.fitnessarea.exception.ResourceNotFoundException;
+import com.fitnessarea.repository.CategoryRepository;
 import com.fitnessarea.repository.ProductRepository;
+import com.fitnessarea.repository.UserRepository;
 import com.fitnessarea.service.ProductService;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private ProductRepository prepo;
+	@Autowired
+	private UserRepository urepo;
+	@Autowired
+	private CategoryRepository crepo;
 
 //	Create Product
 	@Override
@@ -29,8 +39,9 @@ public class ProductServiceImpl implements ProductService {
 
 //	Update Product By Its ID
 	@Override
-	public Product updateProductById(Product product, int pid) {
-		Product updateProduct = this.prepo.findById(pid).orElseThrow(() -> new ResourceNotFoundException("Product ID : " + pid + "Invalid Product ID For Updation"));
+	public Product updateProductById(Product product, int productID) {
+		Product updateProduct = this.prepo.findById(productID).orElseThrow(
+				() -> new ResourceNotFoundException("UPDATE_PRODUCT_ID : " + productID + " Invalid Or Not Found "));
 		updateProduct.setProductName(product.getProductName());
 		updateProduct.setProductPrice(product.getProductPrice());
 		updateProduct.setProductDiscount(product.getProductDiscount());
@@ -42,17 +53,18 @@ public class ProductServiceImpl implements ProductService {
 
 //	Delete Product By Its ID
 	@Override
-	public void deleteProductById(int pid) {
-		Product product = this.prepo.findById(pid).orElseThrow(() -> new ResourceNotFoundException("Product ID : " + pid + "Invalid Product ID For Deletion"));
+	public void deleteProductById(int productID) {
+		Product product = this.prepo.findById(productID).orElseThrow(
+				() -> new ResourceNotFoundException("DELETE_PRODUCT_ID : " + productID + " Invalid Or Not Found "));
 		this.prepo.delete(product);
-		
-		
+
 	}
 
 //	Getting a Product Details By Its ID
 	@Override
-	public Product getProductById(int pid) {
-		Product product = this.prepo.findById(pid).orElseThrow(() -> new ResourceNotFoundException("Product ID : " + pid + "Invalid Product ID"));
+	public Product getProductById(int productID) {
+		Product product = this.prepo.findById(productID).orElseThrow(
+				() -> new ResourceNotFoundException("PRODUCT_ID : " + productID + " Invalid Or Not Found "));
 		return product;
 	}
 
@@ -64,5 +76,19 @@ public class ProductServiceImpl implements ProductService {
 		return listofproduct;
 	}
 
+//	Set User and Category By ID 
+	@Override
+	public Product setUserAndCatrgoryByIDInProduct(int productID, int userID, int categoryID) {
+		Product findProduct = this.prepo.findById(productID).orElseThrow(
+				() -> new ResourceNotFoundException("PRODUCT_ID : " + productID + " Invalid Or Not Found "));
+		User findUser = this.urepo.findById(userID)
+				.orElseThrow(() -> new ResourceNotFoundException("USER_ID : " + userID + " Invalid Or Not Found "));
+		Category findCategory = this.crepo.findById(categoryID).orElseThrow(
+				() -> new ResourceNotFoundException("CATEGORY_ID : " + categoryID + " Invalid Or Not Found "));
+		findProduct.setProductCategory(findCategory);
+		findProduct.setProductUser(findUser);
+		Product save = this.prepo.save(findProduct);
+		return save;
+	}
 
 }

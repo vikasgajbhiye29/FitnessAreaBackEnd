@@ -6,16 +6,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int productID;
+	@NotEmpty(message = "Enter Product Name")
 	private String productName;
+	@NotEmpty(message = "Enter Product Price")
 	private long productPrice;
+	@NotEmpty(message = "Enter Discount")
 	private int productDiscount;
 	private String productImage;
+	@NotEmpty(message = "Add Product Description")
 	private String productDescription;
 //	Category Mapping
 	@ManyToOne
@@ -25,6 +30,10 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "userID")
 	private User productUser;
+//	OrderMapping
+	@ManyToOne
+	@JoinColumn(name = "orderID")
+	private Orders productOrders;
 
 //	Setter And Getter
 	public int getProductID() {
@@ -58,7 +67,7 @@ public class Product {
 	public void setProductDiscount(int productDiscount) {
 		this.productDiscount = productDiscount;
 	}
-	
+
 	public String getProductImage() {
 		return productImage;
 	}
@@ -82,50 +91,27 @@ public class Product {
 	public void setProductCategory(Category productCategory) {
 		this.productCategory = productCategory;
 	}
-	
-	
 
-public User getProductUser() {
+	public User getProductUser() {
 		return productUser;
 	}
 
 	public void setProductUser(User productUser) {
 		this.productUser = productUser;
 	}
+	
 
-	//	ToString Method
-	@Override
-	public String toString() {
-		return "Product [productID=" + productID + ", productName=" + productName + ", productPrice=" + productPrice
-				+ ", productDiscount=" + productDiscount + ", productImage=" + productImage + ", productDescription="
-				+ productDescription + ", productCategory=" + productCategory + "]";
+	public Orders getProductOrders() {
+		return productOrders;
 	}
 
-//	Constructors
-	public Product() {
-		super();
+	public void setProductOrders(Orders productOrders) {
+		this.productOrders = productOrders;
 	}
 
-	public Product(int productID, String productName, long productPrice, int productDiscount, String productImage,
-			String productDescription, Category productCategory) {
-		super();
-		this.productID = productID;
-		this.productName = productName;
-		this.productPrice = productPrice;
-		this.productDiscount = productDiscount;
-		this.productImage = productImage;
-		this.productDescription = productDescription;
-		this.productCategory = productCategory;
-	}
-
+	// ToString Method
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
+	//	Constructors
+
 }

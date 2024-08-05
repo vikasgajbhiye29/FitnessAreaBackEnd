@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 		user.setFname(request.getFname());
 		user.setLname(request.getLname());
 		user.setEmail(request.getEmail());
-		user.setUsername(request.getUsername());
+		user.setUsername(request.getFname() + request.getLname());
 		user.setPassword(request.getPassword());
 		user.setRole(request.getRole().USER);
 		user = this.userRepository.save(user);
@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService {
 
 //	Update User By Its ID
 	@Override
-	public User updateUserById(User user, int uid) {
-		User newuser = this.userRepository.findById(uid)
-				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Available For Update"));
+	public User updateUserById(User user, int userID) {
+		User newuser = this.userRepository.findById(userID)
+				.orElseThrow(() -> new ResourceNotFoundException("USER_ID : " + userID + " Invalid Or Not Found "));
 		newuser.setFname(user.getFname());
 		newuser.setLname(user.getLname());
 		newuser.setEmail(user.getEmail());
@@ -47,17 +47,17 @@ public class UserServiceImpl implements UserService {
 
 // Delete user By Its ID
 	@Override
-	public void deleteUserById(int uid) {
-		User finduser = this.userRepository.findById(uid)
-				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Present For Deletion"));
+	public void deleteUserById(int userID) {
+		User finduser = this.userRepository.findById(userID)
+				.orElseThrow(() -> new ResourceNotFoundException("DELETE_USER_ID : " + userID + " Invalid Or Not Found "));
 		this.userRepository.delete(finduser);
 	}
 
 // Getting User Details By Its ID
 	@Override
-	public User getUserById(int uid) {
-		User userByID = this.userRepository.findById(uid)
-				.orElseThrow(() -> new ResourceNotFoundException("UserId : " + uid + " is Not Available"));
+	public User getUserById(int userID) {
+		User userByID = this.userRepository.findById(userID)
+				.orElseThrow(() -> new ResourceNotFoundException("USER_ID : " + userID + " Invalid Or Not Found "));
 		return userByID;
 	}
 
