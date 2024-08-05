@@ -1,4 +1,4 @@
- package com.fitnessarea.controller;
+package com.fitnessarea.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,33 +21,42 @@ import com.fitnessarea.service.CategoryService;
 public class CategoryController {
 	@Autowired
 	private CategoryService catService;
-//	Create Category URL:- http://localhost:8080/cc
+
+//	Create Category 
+//	URL:- http://localhost:8080/cc
 	@PostMapping("/cc")
-	public ResponseEntity<Category> createCategory(@RequestBody Category category){
+	public ResponseEntity<Category> createCategory(@RequestBody Category category) {
 		Category cat = this.catService.createCategory(category);
 		return new ResponseEntity<Category>(cat, HttpStatus.CREATED);
 	}
-//	Update Category By Its ID URL:- http://localhost:8080/uc/enterid
-	@PutMapping("/uc/{cid}")
-	public ResponseEntity<Category> updateCategory(@RequestBody Category cat, @PathVariable int cid){
-		Category category =  this.catService.updateCategory(cat, cid);
+
+//	Update Category By Its ID 
+//	URL:- http://localhost:8080/uc/categoryID
+	@PutMapping("/uc/{categoryID}")
+	public ResponseEntity<Category> updateCategory(@RequestBody Category cat, @PathVariable int categoryID) {
+		Category category = this.catService.updateCategory(cat, categoryID);
 		return new ResponseEntity<Category>(category, HttpStatus.OK);
 	}
-//	Delete Category By Its ID URL:- http://localhost:8080/dc/enterid
-	@DeleteMapping("/dc/{cid}")
-	public ResponseEntity<String> deleteCategory(@PathVariable int cid){
-		this.catService.deleteCategory(cid);
+
+//	Delete Category By Its ID 
+//	URL:- http://localhost:8080/dc/categoryID
+	@DeleteMapping("/dc/{categoryID}")
+	public ResponseEntity<String> deleteCategory(@PathVariable int categoryID) {
+		this.catService.deleteCategory(categoryID);
 		return new ResponseEntity<String>("Delete Category Successfully...", HttpStatus.OK);
 	}
-//	Getting Category Details By Its ID URL:- http://localhost:8080/sc/enterid
+
+//	Getting Category Details By Its ID 
+//	URL:- http://localhost:8080/sc/categoryID
 	@GetMapping("/sc/{cid}")
-	public ResponseEntity<Category> getSingleCategory(@PathVariable int cid){
-		Category cat = this.catService.getCategoryById(cid);
+	public ResponseEntity<Category> getSingleCategory(@PathVariable int categoryID) {
+		Category cat = this.catService.getCategoryById(categoryID);
 		return new ResponseEntity<Category>(cat, HttpStatus.OK);
 	}
+
 //	List Of Category URL :- http://localhost:8080/cl
 	@GetMapping("/cl")
-	public ResponseEntity<List<Category>> categoryList(){
+	public ResponseEntity<List<Category>> categoryList() {
 		List<Category> list = this.catService.listOfCategory();
 		List<Category> listofcat = list.stream().map(cat -> cat).collect(Collectors.toList());
 		return new ResponseEntity<List<Category>>(listofcat, HttpStatus.OK);
